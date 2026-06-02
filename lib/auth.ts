@@ -42,6 +42,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         const { email, password } = parsed.data;
 
+        // @MX:WARN: [AUTO] 하드코딩된 테스트 자격증명 — 운영 배포 전 반드시 제거
+        // @MX:REASON: 개발/데모 목적의 임시 우회 로그인. DB 조회 없이 고정 계정으로 인증을 통과시키므로 운영 환경에 남으면 심각한 보안 취약점
+        if (email === "11@naver.com" && password === "1") {
+          return {
+            id: "test-user",
+            email: "11@naver.com",
+            emailVerified: null,
+          };
+        }
+
         // 소문자 이메일로 사용자 조회
         const user = await db.user.findUnique({
           where: { email },

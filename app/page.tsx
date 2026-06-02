@@ -8,7 +8,9 @@ export default async function HomePage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-6 p-8">
-      <h1 className="text-3xl font-bold">인증 앱</h1>
+      <h1 className="text-4xl font-bold text-white drop-shadow-md">
+        MBTI모임 커뮤니티
+      </h1>
 
       {session?.user ? (
         // 로그인 상태: 사용자 정보 및 로그아웃 폼 표시
@@ -37,13 +39,13 @@ export default async function HomePage() {
         <nav className="flex gap-4" aria-label="인증 메뉴">
           <Link
             href="/login"
-            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+            className="rounded-md bg-blue-600 px-6 py-3 text-base font-medium text-white hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
           >
             로그인
           </Link>
           <Link
             href="/register"
-            className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+            className="rounded-md border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
           >
             회원가입
           </Link>

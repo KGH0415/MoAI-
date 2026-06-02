@@ -4,8 +4,8 @@ import "./globals.css";
 import { SessionProvider } from "@/components/providers/SessionProvider";
 
 export const metadata: Metadata = {
-  title: "인증 앱",
-  description: "Next.js 16 + Auth.js v5 인증 예제",
+  title: "MBTI모임 커뮤니티",
+  description: "MBTI로 만나는 사람들 — Next.js 16 + Auth.js v5",
 };
 
 export default function RootLayout({

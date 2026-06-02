@@ -9,9 +9,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { loginSchema, type LoginInput } from "@/lib/validations/auth";
+import { clearMbti } from "@/app/mbti/actions";
 
 interface LoginFormProps {
-  // 로그인 성공 후 리다이렉트 대상 URL — 미전달 시 홈("/")으로 이동
+  // 로그인 성공 후 리다이렉트 대상 URL — 미전달 시 /mbti로 이동
+  // (SPEC-MBTI-001 REQ-MBTI-004: 로그인 직후 /mbti로 보내고, 선택/결과 분기는 /mbti 서버 컴포넌트가 단독 담당)
   callbackUrl?: string;
 }
 
@@ -46,8 +48,12 @@ export function LoginForm({ callbackUrl }: LoginFormProps) {
       return;
     }
 
-    // 성공 — callbackUrl 또는 홈으로 이동
-    router.push(callbackUrl ?? "/");
+    // 성공 — 이전 mbti 선택값(쿠키)을 비워 매 로그인마다 선택 화면을 강제한다.
+    // clearMbti 후 이동해야 /mbti 서버 컴포넌트가 결과 화면 대신 MbtiSelector로 분기한다.
+    await clearMbti();
+
+    // callbackUrl 또는 /mbti로 이동(REQ-MBTI-004). 선택 여부 분기는 /mbti 서버 컴포넌트가 담당
+    router.push(callbackUrl ?? "/mbti");
     router.refresh();
   };
 
