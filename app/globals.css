@@ -1,0 +1,21 @@
+/* Tailwind 기본 디렉티브 */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 기본 전역 스타일 */
+@layer base {
+  html {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      sans-serif;
+  }
+
+  body {
+    @apply bg-gray-50 text-gray-900 antialiased;
+  }
+
+  /* 포커스 링 — 접근성 (WCAG 2.1 AA) */
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-blue-600;
+  }
+}

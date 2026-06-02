@@ -1,0 +1,77 @@
+// Prisma 스키마 — SPEC-AUTH-001 이메일/비밀번호 인증 핵심 모델
+// 생성자: expert-backend / 날짜: 2026-06-02
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 사용자 계정 — 이메일/비밀번호 및 향후 OAuth 연동 지원
+model User {
+  id            String    @id @default(cuid())
+  // 이메일은 항상 소문자로 저장 (애플리케이션 레이어에서 toLowerCase 적용)
+  email         String    @unique
+  // OAuth 이메일 인증 완료 시각 (미인증 시 null)
+  emailVerified DateTime?
+  // bcrypt 해시값 저장 — OAuth 전용 계정은 null 가능
+  passwordHash  String?
+  name          String?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // @MX:TODO: OAuth 도입 시 Account 관계 필드 활성화 (REQ-AUTH-003)
+  // accounts Account[]
+  // @MX:TODO: DB 세션 전략 도입 시 Session 관계 필드 활성화 (REQ-AUTH-003)
+  // sessions  Session[]
+
+  @@map("users")
+}
+
+// 이메일 인증 토큰 — Auth.js v5 기본 어댑터 스키마 호환
+// @MX:TODO: Resend 이메일 전송 + 인증 플로우 구현 시 활성화 (REQ-AUTH-004)
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// @MX:TODO: Google OAuth 도입 시 Account 모델 주석 해제 (REQ-AUTH-003)
+// model Account {
+//   id                String  @id @default(cuid())
+//   userId            String
+//   type              String
+//   provider          String
+//   providerAccountId String
+//   refresh_token     String? @db.Text
+//   access_token      String? @db.Text
+//   expires_at        Int?
+//   token_type        String?
+//   scope             String?
+//   id_token          String? @db.Text
+//   session_state     String?
+//
+//   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+//
+//   @@unique([provider, providerAccountId])
+//   @@map("accounts")
+// }
+
+// @MX:TODO: DB 세션 전략 도입 시 Session 모델 주석 해제 (REQ-AUTH-003)
+// model Session {
+//   id           String   @id @default(cuid())
+//   sessionToken String   @unique
+//   userId       String
+//   expires      DateTime
+//
+//   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+//
+//   @@map("sessions")
+// }

@@ -1,0 +1,7 @@
+{
+  "detected": true,
+  "matched_keywords": ["PostgreSQL", "Prisma"],
+  "source_files": [".moai/project/tech.md"],
+  "scanned_at": "2026-06-02T00:00:00Z",
+  "tech_md_hash": "n/a-new-project"
+}
