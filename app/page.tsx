@@ -7,7 +7,7 @@ export default async function HomePage() {
   const session = await auth();
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-6 p-8">
+    <main className="rainbow-bg flex min-h-screen flex-col items-center justify-center gap-6 p-8">
       <h1 className="text-4xl font-bold text-white drop-shadow-md">
         MBTI모임 커뮤니티
       </h1>

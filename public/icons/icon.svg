@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="MBTI모임 앱 아이콘">
+  <defs>
+    <linearGradient id="rainbow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ef4444"/>
+      <stop offset="0.0667" stop-color="#f97316"/>
+      <stop offset="0.1333" stop-color="#f59e0b"/>
+      <stop offset="0.2" stop-color="#eab308"/>
+      <stop offset="0.2667" stop-color="#84cc16"/>
+      <stop offset="0.3333" stop-color="#22c55e"/>
+      <stop offset="0.4" stop-color="#10b981"/>
+      <stop offset="0.4667" stop-color="#14b8a6"/>
+      <stop offset="0.5333" stop-color="#06b6d4"/>
+      <stop offset="0.6" stop-color="#0ea5e9"/>
+      <stop offset="0.6667" stop-color="#3b82f6"/>
+      <stop offset="0.7333" stop-color="#6366f1"/>
+      <stop offset="0.8" stop-color="#8b5cf6"/>
+      <stop offset="0.8667" stop-color="#a855f7"/>
+      <stop offset="0.9333" stop-color="#d946ef"/>
+      <stop offset="1" stop-color="#ec4899"/>
+    </linearGradient>
+  </defs>
+  <!-- 마스커블 대응: 가장자리 10% 안전 영역을 고려해 배경을 전체 채움 -->
+  <rect width="512" height="512" rx="96" fill="url(#rainbow)"/>
+  <text x="256" y="256" text-anchor="middle" dominant-baseline="central"
+        font-family="system-ui, -apple-system, 'Segoe UI', sans-serif"
+        font-size="120" font-weight="700" fill="#ffffff"
+        style="paint-order: stroke">MBTI</text>
+</svg>

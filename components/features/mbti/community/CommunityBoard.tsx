@@ -188,6 +188,29 @@ const CSS = `
   opacity:0;pointer-events:none;transition:.3s;z-index:99;
 }
 .infp-board .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* 삭제 확인 모달 — 기본 confirm 대체, 종이 질감 톤 유지 */
+.infp-board .modal-overlay{
+  position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:22px;
+  background:rgba(44,40,35,.42);backdrop-filter:saturate(120%) blur(3px);
+  opacity:0;animation:ib-fade .22s ease forwards;
+}
+@keyframes ib-fade{to{opacity:1}}
+.infp-board .modal-box{
+  width:100%;max-width:360px;background:var(--card);border:1px solid var(--line);
+  border-radius:20px;padding:26px 24px 20px;text-align:center;
+  box-shadow:0 26px 60px -28px rgba(44,40,35,.7);
+  transform:translateY(10px) scale(.97);animation:ib-pop .26s cubic-bezier(.2,.9,.3,1.1) forwards;
+}
+@keyframes ib-pop{to{transform:translateY(0) scale(1)}}
+.infp-board .modal-box .m-ico{
+  width:48px;height:48px;margin:0 auto 14px;border-radius:14px;display:grid;place-items:center;
+  background:var(--plum-wash);color:var(--danger);font-size:22px;
+}
+.infp-board .modal-box h3{font-family:var(--serif);font-weight:700;font-size:19px;color:var(--ink);margin-bottom:7px}
+.infp-board .modal-box p{font-size:13.5px;color:var(--ink-soft);line-height:1.6;margin-bottom:22px}
+.infp-board .modal-acts{display:flex;gap:9px}
+.infp-board .modal-acts .btn{flex:1;justify-content:center;padding:11px 16px;font-size:14px}
 `;
 
 export function CommunityBoard({
@@ -205,6 +228,7 @@ export function CommunityBoard({
   const [draftScope, setDraftScope] = useState("나만 보기");
   const [toastMsg, setToastMsg] = useState("");
   const [toastShow, setToastShow] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const [today, setToday] = useState("");
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -218,6 +242,16 @@ export function CommunityBoard({
       }),
     );
   }, []);
+
+  // 모달이 열려 있을 때 ESC로 닫기
+  useEffect(() => {
+    if (!confirmOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setConfirmOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [confirmOpen]);
 
   function toast(msg: string) {
     setToastMsg(msg);
@@ -243,12 +277,17 @@ export function CommunityBoard({
     toast("일기가 저장되었어요 ✦");
   }
 
+  // 삭제는 커스텀 확인 모달을 거친다 — 실제 삭제는 confirmDelete에서 수행
   function del() {
-    if (!window.confirm("오늘의 일기를 삭제할까요?")) return;
+    setConfirmOpen(true);
+  }
+
+  function confirmDelete() {
     setDiary({ text: "", scope: "나만 보기", saved: false });
     setDraft("");
     setDraftScope("나만 보기");
     setEditing(false);
+    setConfirmOpen(false);
     toast("일기를 삭제했어요");
   }
 
@@ -440,6 +479,31 @@ export function CommunityBoard({
           </Link>
         </div>
       </div>
+
+      {/* 삭제 확인 모달 — 배경 클릭 시 닫힘 */}
+      {confirmOpen && (
+        <div
+          className="modal-overlay"
+          onClick={() => setConfirmOpen(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="confirm-title"
+        >
+          <div className="modal-box" onClick={(e) => e.stopPropagation()}>
+            <div className="m-ico">🗑</div>
+            <h3 id="confirm-title">오늘의 일기를 삭제할까요?</h3>
+            <p>삭제하면 작성한 기록을 다시 되돌릴 수 없어요.</p>
+            <div className="modal-acts">
+              <button className="btn btn-ghost" onClick={() => setConfirmOpen(false)}>
+                취소
+              </button>
+              <button className="btn btn-danger" onClick={confirmDelete}>
+                삭제하기
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 토스트 */}
       <div className={`toast${toastShow ? " show" : ""}`}>{toastMsg}</div>

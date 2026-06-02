@@ -12,7 +12,21 @@
 
   body {
     @apply text-gray-900 antialiased;
-    /* 모든 페이지 공통 — 16색 무지개 그라데이션 배경 */
+    /* 기본 배경은 흰색 — 무지개 그라데이션은 인증 게이트웨이 페이지에만 .rainbow-bg로 적용 */
+    min-height: 100vh;
+    background-color: #ffffff;
+  }
+
+  /* 포커스 링 — 접근성 (WCAG 2.1 AA) */
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-blue-600;
+  }
+}
+
+@layer components {
+  /* 16색 무지개 그라데이션 — 인증 게이트웨이 전용(홈, 로그인, 회원가입) */
+  /* 기존 body 규칙의 정확한 hex 색상 16개를 그대로 보존 */
+  .rainbow-bg {
     min-height: 100vh;
     background-image: linear-gradient(
       135deg,
@@ -34,10 +48,5 @@
       #ec4899
     );
     background-attachment: fixed;
-  }
-
-  /* 포커스 링 — 접근성 (WCAG 2.1 AA) */
-  *:focus-visible {
-    @apply outline-2 outline-offset-2 outline-blue-600;
   }
 }
